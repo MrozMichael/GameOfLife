@@ -2,10 +2,12 @@ import java.util.*;
 
 public class Board {
     private int[][] state;
+    private int[][] nextState;
 
     public Board(int rows, int cols){
 
         state = new int[rows][cols];
+        nextState = new int[rows][cols];
     }
 
     public void deadState(){
@@ -49,37 +51,23 @@ public class Board {
         * dead cell with 3 living neighbours: lives
         * */
 
-        /*edge cases: a) first cell in a row. ie state[i][0]. has no leftmost neighbour or top/bot left diagonals
-                      b) last cell in a row, ie state[i][n-1]. has no rightmost neighbour or top/bot right diagonals
-                      c) all cells in top row, ie state[0][k], no upper neighbours or top diagonals
-                      d) all cells in bottom row, ie state[n-1][k], no lower neighbours or bot diagonals
-                      so need special constraints for first row, first col of each row, last col of each row, last row
-
-                      1) iterate [0][0] with respect to a) and c).
-                      2) iterate [0][k] until k = n-1 with respect to c)
-                      3) iterate [0][n-1] with respect to b) and c)
-                      4) iterate [1][0] with respect to a)
-                      5) iterate [1][k] until k = n-1 normally
-                      6) iterate [1][n-1] with respect to b)
-                      7) repeat 4-6 until reach last row
-                      8) iterate last row like first, but replace c) with d)
-
-                      iterate [0][0]
-                      then loop through [0][1] -> [0][n-2]
-                      iterate [0][n-1]
-                      loop row [1] through row [n-2] // ex: 5x5 board, n = 5, row[3] would be 2nd to last row
-                      loop should start by doing special iteration for [i][0], then inner loop for i[1] -> i[n-2] then i[n-1]
-                      then iterate [n-1][0]
-                      then loop through [n-1][1] -> [n-1][n-2]
-                      then iterate [0][n-1]
+        /*
+        handleTopRow()
+        //for int i = 1; i < rows.length -2; i++
+            handleLeftmost(i)
+            for int k = 1; k < cols.length - 2; k++
+               check all 8 neighbours
+            handleRightMost(i)
         * */
+        //handleBotRow()
+        //state = nextState;
     }
 
 
-    public void handleLeftMost(int cell){
+    public void handleLeftMost(int rowNum){
         //cell has neighbours: above, above-right, right, below-right, below
     }
-    public void handleRightMost(int cell){
+    public void handleRightMost(int rowNum){
         //cell has neighbours: above, above-left, left, below-left, below
     }
 
