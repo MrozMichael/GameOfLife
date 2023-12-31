@@ -1,8 +1,7 @@
 
 public class Main {
     public static void main(String[] args) {
-       Board board = new Board(3, 3);
-       board.deadState();
-       board.printState();
+       Board board = new Board(5, 5);
+
     }
 }

@@ -1,4 +1,4 @@
-import java.util.Arrays;
+import java.util.*;
 
 public class Board {
     private int[][] state;
@@ -12,6 +12,15 @@ public class Board {
         for (int i = 0; i < state.length; i++){
             for (int k = 0; k < state[i].length; k++){
                 state[i][k] = 0;
+            }
+        }
+    }
+
+    public void randomState(){
+        for( int i = 0; i < state.length; i++){
+            for (int k = 0; k < state[i].length;k++){
+                int zeroOne = new Random().nextInt(2);
+                state[i][k] = zeroOne;
             }
         }
     }
