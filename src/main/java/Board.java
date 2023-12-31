@@ -29,4 +29,15 @@ public class Board {
           System.out.println(Arrays.toString(row));
         }
     }
+
+    public void render(){
+        for (int i = 0; i <state.length; i++) {
+            System.out.print("|");
+            for (int k = 0; k < state[i].length; k++) {
+                String toPrint = state[i][k] == 1 ? "#" : " ";
+                System.out.print(toPrint);
+            }
+            System.out.println("|");
+        }
+    }
 }
