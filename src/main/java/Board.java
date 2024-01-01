@@ -72,17 +72,15 @@ public class Board {
             return;
         }
         handleEdgeRow("top");
-        // TODO BUG: on a 3x3 test, state[1][1] goes from 1 -> 0, should be 1 -> 1
         for (int i = 1; i < state.length -1; i++){
             handleLeftMost(i);
-            for (int k = 1; k < lastCol - 1; k++) {
+            for (int k = 1; k <= lastCol - 1; k++) {
                 //state[i][k] = current cell
                 //each cell has neighbours: above-left, above, above-right, right, below-right, below, below-left, left
                 int[] neighbours = {
                         state[i-1][k-1], state[i-1][k], state[i-1][k+1], state[i][k+1],
                         state[i+1][k+1],state[i+1][k], state[i+1][k-1], state[i][k-1]
                 };
-                System.out.println("neighbours length: " + neighbours.length);
                 nextState[i][k] = nextStatus(state[i][k], neighbours);
             }
             handleRightMost(i);
@@ -151,7 +149,6 @@ public class Board {
             default:
                 break;
         }
-        System.out.println("reached end of nextStatus");
         return nextStatus;
     }
 
