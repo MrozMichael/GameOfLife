@@ -133,6 +133,32 @@ class BoardTest {
         assertTrue(testBoard(board.getState(), expectedState));
     }
 
+    @Test
+
+    void toadPatternWorks(){
+        int[][] initialState = {
+                {0,0,0,0,0,0},
+                {0,0,0,0,0,0},
+                {0,0,1,1,1,0},
+                {0,1,1,1,0,0},
+                {0,0,0,0,0,0},
+                {0,0,0,0,0,0}
+        };
+        int[][] expectedState = {
+                {0,0,0,0,0,0},
+                {0,0,0,1,0,0},
+                {0,1,0,0,1,0},
+                {0,1,0,0,1,0},
+                {0,0,1,0,0,0},
+                {0,0,0,0,0,0}
+        };
+
+        Board board = new Board(6, 6);
+        board.fixedState(initialState);
+        board.advance();
+        assertTrue(testBoard(board.getState(), expectedState));
+    }
+
     public boolean testBoard(int[][] current, int[][] expected){
         if (current.length != expected.length || current[0].length != expected[0].length){
             return false;

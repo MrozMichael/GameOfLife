@@ -5,14 +5,18 @@ public class Board {
     private int[][] nextState;
     private final int rows;
     private final int cols;
+
+    private boolean hasState;
     public Board(int rows, int cols){
         this.rows = rows;
         this.cols = cols;
         state = new int[rows][cols];
         nextState = new int[rows][cols];
+        hasState = false;
     }
 
     public void deadState(){
+        hasState = true;
         for (int i = 0; i < state.length; i++){
             for (int k = 0; k < state[i].length; k++){
                 state[i][k] = 0;
@@ -23,6 +27,7 @@ public class Board {
     public void fixedState(int[][] givenState){
         if (givenState.length == rows && givenState[0].length == cols) {
             state = givenState;
+            hasState = true;
         }
         else {
             System.out.println("Error, grid must be " + rows +"x"+ cols);
@@ -30,6 +35,7 @@ public class Board {
     }
 
     public void randomState(){
+        hasState = true;
         for( int i = 0; i < state.length; i++){
             for (int k = 0; k < state[i].length;k++){
                 int zeroOne = new Random().nextInt(2);
@@ -65,13 +71,13 @@ public class Board {
 
         if (state.length == 1) {
             handleSingleRow(lastCol);
-            state = nextState;
+            updateState();
             return;
         }
 
         if (lastCol == 0){
             handleSingleCol();
-            state = nextState;
+            updateState();
             return;
         }
 
@@ -90,7 +96,7 @@ public class Board {
             handleRightMost(i);
           }
         handleEdgeRow("bottom");
-        state = nextState;
+        updateState();
     }
 
 
@@ -175,8 +181,18 @@ public class Board {
         return state;
     }
 
+    public void updateState(){
+        for (int i = 0; i < state.length; i++){
+            for (int k = 0; k < state[i].length; k++){
+                state[i][k] = nextState[i][k];
+            }
+        }
+    }
+
     public void eternalLife(){
-        randomState();
+        if (!hasState){
+            randomState();
+        }
         while(true){
             render();
             advance();
