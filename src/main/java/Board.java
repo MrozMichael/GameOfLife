@@ -44,6 +44,11 @@ public class Board {
     }
 
     public void render(){
+        String bars = "==";
+        for (int i = 0; i < cols; i++){
+            bars += "=";
+        }
+        System.out.println(bars);
         for (int i = 0; i <state.length; i++) {
             System.out.print("|");
             for (int k = 0; k < state[i].length; k++) {
@@ -52,6 +57,7 @@ public class Board {
             }
             System.out.println("|");
         }
+        System.out.println(bars);
     }
 
     public void advance(){
@@ -167,6 +173,14 @@ public class Board {
 
     public int[][] getState(){
         return state;
+    }
+
+    public void eternalLife(){
+        randomState();
+        while(true){
+            render();
+            advance();
+        }
     }
 
     }
