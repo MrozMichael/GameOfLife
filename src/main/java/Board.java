@@ -56,26 +56,24 @@ public class Board {
 
     public void advance(){
         int lastCol = state[0].length -1;
+
         if (state.length == 1) {
-            //if only 1 row, [0] dies always. [1] -> [last-1] have 2 neighbours, last dies
-            nextState[0][0] = 0;
-            nextState[0][lastCol] = 0;
-            for (int i = 1; i < lastCol; i++) {
-                int[] neighbours = {state[0][i - 1], state[0][i + 1]};
-                nextState[0][i] = nextStatus(state[0][i], neighbours);
-            }
+            handleSingleRow(lastCol);
+            state = nextState;
             return;
         }
+
         if (lastCol == 0){
-            // TODO handle game w/ column size 1
-            //if 1 column, top/bot row die, rest stay as they are, then all die (i think?)
+            handleSingleCol();
+            state = nextState;
             return;
         }
+
         handleEdgeRow("top");
         for (int i = 1; i < state.length -1; i++){
             handleLeftMost(i);
             for (int k = 1; k <= lastCol - 1; k++) {
-                //state[i][k] = current cell
+
                 //each cell has neighbours: above-left, above, above-right, right, below-right, below, below-left, left
                 int[] neighbours = {
                         state[i-1][k-1], state[i-1][k], state[i-1][k+1], state[i][k+1],
@@ -116,7 +114,6 @@ public class Board {
             int[] neighboursOfFarLeft = {state[currentRow][1], state[verticalRow][1], state[verticalRow][0]};
             nextState[currentRow][0] = nextStatus(state[currentRow][0], neighboursOfFarLeft);
             for (int i = 1; i < last; i++){
-                //left, below-left, below, below-right, right
                 int[] neighbours = {state[currentRow][i-1], state[verticalRow][i-1], state[verticalRow][i], state[verticalRow][i+1], state[currentRow][i+1]};
                 nextState[currentRow][i] = nextStatus(state[currentRow][i], neighbours);
             }
@@ -124,14 +121,30 @@ public class Board {
             nextState[currentRow][last] = nextStatus(state[currentRow][last], neighboursOfFarRight);
         }
 
+        public void handleSingleRow(int lastCol){
+            nextState[0][0] = 0;
+            nextState[0][lastCol] = 0;
+            for (int i = 1; i < lastCol; i++) {
+                int[] neighbours = {state[0][i - 1], state[0][i + 1]};
+                nextState[0][i] = nextStatus(state[0][i], neighbours);
+            }
+        }
+
+        public void handleSingleCol(){
+            nextState[0][0] = 0;
+            nextState[state.length -1][0] = 0;
+            for (int i = 1; i < state.length -1; i++){
+                //rest of rows have neighbour above, and below
+                int[] neighbours = {state[i-1][0], state[i+1][0]};
+                nextState[i][0] = nextStatus(state[i][0], neighbours);
+            }
+        }
+
     public int nextStatus(int currentStatus, int[] neighbours){
         int living = 0;
         int nextStatus = 0;
         for(int neighbour: neighbours){
             living += neighbour;
-        }
-        if (currentStatus == 1 && neighbours.length == 8) {
-            System.out.println("Living total is: " + living);
         }
         /*rules:
          * if cell alive and has 0 or 1 living neighbours: dies
