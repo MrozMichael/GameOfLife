@@ -72,12 +72,9 @@ public class Board {
             return;
         }
         handleEdgeRow("top");
-        System.out.println("reached");
-        // TODO BUG: on a 3x3 test, state[1][1] and state[1][2] go from 1 -> 0, should be 1 -> 1
-        for (int i = 1; i < state.length -2; i++){
+        // TODO BUG: on a 3x3 test, state[1][1] goes from 1 -> 0, should be 1 -> 1
+        for (int i = 1; i < state.length -1; i++){
             handleLeftMost(i);
-            // BUG: not reaching past here
-            System.out.println("lastCol is " + lastCol);
             for (int k = 1; k < lastCol - 1; k++) {
                 //state[i][k] = current cell
                 //each cell has neighbours: above-left, above, above-right, right, below-right, below, below-left, left
@@ -154,6 +151,7 @@ public class Board {
             default:
                 break;
         }
+        System.out.println("reached end of nextStatus");
         return nextStatus;
     }
 

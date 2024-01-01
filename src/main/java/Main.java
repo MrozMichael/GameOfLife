@@ -9,5 +9,6 @@ public class Main {
         };
         board.fixedState(initialState);
         board.advance();
+        board.render();
     }
 }
