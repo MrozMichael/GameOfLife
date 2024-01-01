@@ -3,9 +3,11 @@ import java.util.*;
 public class Board {
     private int[][] state;
     private int[][] nextState;
-
+    private final int rows;
+    private final int cols;
     public Board(int rows, int cols){
-
+        this.rows = rows;
+        this.cols = cols;
         state = new int[rows][cols];
         nextState = new int[rows][cols];
     }
@@ -19,7 +21,12 @@ public class Board {
     }
 
     public void fixedState(int[][] givenState){
-        state = givenState;
+        if (givenState.length == rows && givenState[0].length == cols) {
+            state = givenState;
+        }
+        else {
+            System.out.println("Error, grid must be " + rows +"x"+ cols);
+        }
     }
 
     public void randomState(){
@@ -65,8 +72,12 @@ public class Board {
             return;
         }
         handleEdgeRow("top");
+        System.out.println("reached");
+        // TODO BUG: on a 3x3 test, state[1][1] and state[1][2] go from 1 -> 0, should be 1 -> 1
         for (int i = 1; i < state.length -2; i++){
             handleLeftMost(i);
+            // BUG: not reaching past here
+            System.out.println("lastCol is " + lastCol);
             for (int k = 1; k < lastCol - 1; k++) {
                 //state[i][k] = current cell
                 //each cell has neighbours: above-left, above, above-right, right, below-right, below, below-left, left
@@ -74,6 +85,7 @@ public class Board {
                         state[i-1][k-1], state[i-1][k], state[i-1][k+1], state[i][k+1],
                         state[i+1][k+1],state[i+1][k], state[i+1][k-1], state[i][k-1]
                 };
+                System.out.println("neighbours length: " + neighbours.length);
                 nextState[i][k] = nextStatus(state[i][k], neighbours);
             }
             handleRightMost(i);
@@ -123,7 +135,9 @@ public class Board {
         for(int neighbour: neighbours){
             living += neighbour;
         }
-
+        if (currentStatus == 1 && neighbours.length == 8) {
+            System.out.println("Living total is: " + living);
+        }
         /*rules:
          * if cell alive and has 0 or 1 living neighbours: dies
          *cell alive has 2-3 living neighbours: lives
@@ -137,9 +151,14 @@ public class Board {
             case 3:
                 nextStatus = 1;
                 break;
+            default:
+                break;
         }
         return nextStatus;
     }
 
+    public int[][] getState(){
+        return state;
+    }
 
     }
