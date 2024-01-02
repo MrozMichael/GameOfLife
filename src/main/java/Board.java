@@ -189,14 +189,18 @@ public class Board {
         }
     }
 
-    public void eternalLife(){
+    public void eternalLife(int refreshRate){
         if (!hasState){
             randomState();
         }
-        while(true){
-            render();
-            advance();
-        }
+        Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+               render();
+               advance();
+            }
+        }, 0, refreshRate);
     }
 
     }
